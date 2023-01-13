@@ -1,6 +1,7 @@
 <template>
   <div>
-    {{ useState("logged_state") }}
+    <!-- {{ useState("logged_state") }} -->
+    {{ userS.userloginState }}
     <div>
       <div class="mx-auto justify-center">
         <form>
@@ -27,26 +28,41 @@
           </div>
         </form>
       </div>
-      <button
-        @click="result"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-      >
-        LogIn
-      </button>
+      <div class="flex justify-around">
+        <button
+          @click="result"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+        >
+          LogIn
+        </button>
+        <button
+          @click="LogOutFn"
+          class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+        >
+          Log Out
+        </button>
+      </div>
     </div>
-    <div>
-      <button
-        @click="LogOutFn"
-        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-      >
-        Log Out
-      </button>
+    <div class="font-extralight text-xs">
+      Users for Testing purposes: (make sure pocketbase is running)
+      <div>
+        <div class="font-extrabold text-md">User1</div>
+        username: TestUser1 <br />
+        password: 12345678
+      </div>
+      <div>
+        <div class="font-extrabold text-md">User2</div>
+        username: TestUser2 <br />
+        password: 12345678
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-useState("logged_state", () => (useCookie("authTokenPB") != null ? "logged_in" : "logged_out"));
+import { userStore } from "@/stores/userStore";
+const userS = userStore();
+// useState("logged_state", () => (useCookie("authTokenPB") != null ? "logged_in" : "logged_out"));
 const userName = ref("");
 const passWord = ref("");
 const result = async function sendData() {
@@ -60,14 +76,16 @@ const result = async function sendData() {
     lazy: true,
   });
   if (res.data) {
-    useState("logged_state", () => (res.data.value ? "logged_in" : "logged_out"));
+    // useState("logged_state", () => (res.data.value ? "logged_in" : "logged_out"));
   }
+  userS.setloginState(true);
   return res;
 };
 
 const LogOutFn = async () => {
   const result = await useFetch("/api/UserLogOut");
   console.log(result.data.value?.status);
-  useState("logged_state", () => "logged_out");
+  // useState("logged_state", () => "logged_out");
+  userS.setloginState(false);
 };
 </script>
