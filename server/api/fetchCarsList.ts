@@ -5,7 +5,7 @@ import colors from "colors";
 const pb = new PocketBase('http://127.0.0.1:8090');
 
 export default defineEventHandler(async (event) => {
-    const cookie: any = getCookie(event, 'authTokenPB');
+    const cookie = getCookie(event, 'authTokenPB');
     if (cookie) {
 
         console.log(colors.bold.yellow("recieved user cookie: ") + colors.yellow(cookie));
@@ -15,11 +15,19 @@ export default defineEventHandler(async (event) => {
     }
     else {
         console.log(colors.red(`No cookie found, only found ${cookie}`));
+        throw createError({
+            statusCode: 403,
+            statusMessage: 'no auth token found',
+        })
     }
     try {
         // get an up-to-date auth store state by veryfing and refreshing the loaded auth model (if any)
         pb.authStore.isValid && await pb.collection('users').authRefresh();
-    } catch (_) {
+    } catch (error) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: error as string,
+        })
         // clear the auth store on failed refresh
         pb.authStore.clear();
     }

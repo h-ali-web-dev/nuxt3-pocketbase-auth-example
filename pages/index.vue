@@ -3,7 +3,7 @@
     <!-- {{ useState("logged_state") }} -->
     user logged in? : {{ userS.userloginState }} <br />
     <div v-if="errorMessage != 'none'" class="text-red-400">error occured: {{ errorMessage }}</div>
-    <div>
+    <div v-if="!userS.userloginState">
       <div class="mx-auto justify-center">
         <form>
           <div class="mb-6">
@@ -29,20 +29,29 @@
           </div>
         </form>
       </div>
-      <div class="flex justify-around">
+      <div>
         <button
           @click="result"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         >
           LogIn
         </button>
-        <button
+        <!-- <button
           @click="LogOutFn"
           class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         >
           Log Out
-        </button>
+        </button> -->
       </div>
+    </div>
+    <div v-else>
+      <div class="font-extralight">Check 'authTokenPB' in your cookies</div>
+      <button
+        @click="LogOutFn"
+        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+      >
+        Log Out
+      </button>
     </div>
     <div class="font-extralight text-xs">
       Users for Testing purposes: (make sure pocketbase is running)
@@ -63,6 +72,7 @@
 <script setup lang="ts">
 import { userStore } from "@/stores/userStore";
 const userS = userStore();
+userS.checkToken();
 const errorMessage = ref("none");
 // useState("logged_state", () => (useCookie("authTokenPB") != null ? "logged_in" : "logged_out"));
 const userName = ref("");

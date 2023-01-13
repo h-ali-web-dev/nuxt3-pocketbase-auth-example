@@ -14,4 +14,7 @@ After login, the function works as expected and returns the list of data.
 ## installation
 
 add the "pocketbase" exe file in the root directory of this project and use either "./pocketbase serve" command or the 'servePocketBase' script in package.json.
-# nuxt3-pocketbase-auth-example
+
+# Issues
+
+If page is refeshed on /cars route, the server does not read the cookie and authorization is failed. However, after changing routes the cookie is read.

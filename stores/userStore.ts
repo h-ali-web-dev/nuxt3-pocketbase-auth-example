@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const userStore = defineStore("counter", {
     state: () => ({
-        userLoggedIn: false,
+        userLoggedIn: useCookie('authTokenPB') ? true : false,
     }),
 
     getters: {
@@ -13,5 +13,8 @@ export const userStore = defineStore("counter", {
         setloginState(state: boolean) {
             this.userLoggedIn = state;
         },
+        checkToken() {
+            this.userLoggedIn = useCookie('authTokenPB') ? true : false;
+        }
     },
 });

@@ -17,9 +17,9 @@ export default defineEventHandler(async (event) => {
             statusCode: 404,
             statusMessage: error as string,
         })
-        return {
-            "err": error
-        }
+        // return {
+        //     "err": error
+        // }
     }
 
     // this is not necessary for this application
