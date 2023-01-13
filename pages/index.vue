@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- {{ useState("logged_state") }} -->
-    {{ userS.userloginState }}
+    user logged in? : {{ userS.userloginState }}
     <div>
       <div class="mx-auto justify-center">
         <form>

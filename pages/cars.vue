@@ -1,7 +1,9 @@
 <template>
   <div>
+    The data will not be fetched until the user is logged in. <br />
+    press "refresh" after login to fetch data.
     <div class="bg-blue-300 flex justify-around">
-      pending state:{{ pending }}
+      fetch pending state:{{ pending }}
       <button @click="refresh" class="border rounded p-1 bg-slate-200">refresh</button>
     </div>
     <div>
