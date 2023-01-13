@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- {{ useState("logged_state") }} -->
-    user logged in? : {{ userS.userloginState }}
+    user logged in? : {{ userS.userloginState }} <br />
+    <div v-if="errorMessage != 'none'" class="text-red-400">error occured: {{ errorMessage }}</div>
     <div>
       <div class="mx-auto justify-center">
         <form>
@@ -62,6 +63,7 @@
 <script setup lang="ts">
 import { userStore } from "@/stores/userStore";
 const userS = userStore();
+const errorMessage = ref("none");
 // useState("logged_state", () => (useCookie("authTokenPB") != null ? "logged_in" : "logged_out"));
 const userName = ref("");
 const passWord = ref("");
@@ -75,9 +77,16 @@ const result = async function sendData() {
     },
     lazy: true,
   });
-  if (res.data) {
-    // useState("logged_state", () => (res.data.value ? "logged_in" : "logged_out"));
+  errorMessage.value = "none";
+  if (res.error.value != null) {
+    console.log("Error occured: " + res.error.value?.message);
+    errorMessage.value = res.error.value?.message as string;
   }
+
+  // console.log(res);
+  // if (res.data) {
+  //   // useState("logged_state", () => (res.data.value ? "logged_in" : "logged_out"));
+  // }
   userS.setloginState(true);
   return res;
 };
