@@ -14,3 +14,4 @@ After login, the function works as expected and returns the list of data.
 ## installation
 
 add the "pocketbase" exe file in the root directory of this project and use either "./pocketbase serve" command or the 'servePocketBase' script in package.json.
+# nuxt3-pocketbase-auth-example
